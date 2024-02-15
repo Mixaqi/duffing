@@ -5,7 +5,7 @@ from autograd import jacobian
 
 
 def newton_system(
-    F: callable, x0: np.ndarray, tol: float = 1e-5, max_iter: int = 100
+    F: callable, x0: np.ndarray, tol: float = 1e-5, max_iter: int = 100,
 ) -> np.ndarray:
     """Implementation of Newton's method for solving a system of nonlinear equations.
 
@@ -33,7 +33,7 @@ def newton_system(
 
 
 def newton_system_full_predictor(
-    F: callable, x0: np.ndarray, tol: float = 1e-5, max_iter: int = 100
+    F: callable, x0: np.ndarray, tol: float = 1e-5, max_iter: int = 100,
 ) -> np.ndarray:
     """Implementation of Newton's method with full predictor step for solving a system of nonlinear equations.
 
@@ -105,7 +105,7 @@ def F(x: np.ndarray) -> np.ndarray:
             x[0] ** 2 + x[1] ** 2 + x[2] ** 2 - 10,
             x[0] * x[1] - 5 * x[1] + x[2] ** 3 + 1,
             x[0] * x[2] + x[1] * x[2] - 2 * x[2] - 1,
-        ]
+        ],
     )
 
 

@@ -93,6 +93,7 @@ def calculate_norm(
 
 print(calculate_coefficients(f))
 approximation_function = calculate_approximation_function(harmonics_number)
+print(approximation_function)
 norm_value = calculate_norm(f, approximation_function, interval_start, interval_end)
 print(f"L2 Norm: {norm_value}")
 plot_function_and_approximation(f, approximation_function, interval_start, interval_end)
