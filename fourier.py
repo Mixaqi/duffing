@@ -1,46 +1,100 @@
-import numpy as np
+from __future__ import annotations
+
+import math
+from typing import Callable
+
 import matplotlib.pyplot as plt
-from typing import List, Tuple
+import numpy as np
+import sympy as sy
+from scipy.integrate import quad
 
-# Задаем периодическую функцию, которую хотим аппроксимировать
-def target_function(x: np.ndarray) -> np.ndarray:
-    return np.sin(x) + 0.5 * np.sin(2 * x) + 0.2 * np.sin(3 * x)
+x = sy.Symbol("x")
+harmonics_number = 2
+interval_start = -math.pi
+interval_end = math.pi
 
-# Функция для вычисления коэффициентов Фурье
-def compute_fourier_coefficients(x_values: np.ndarray, num_harmonics: int) -> List[Tuple[float, float]]:
-    coefficients = []
-    for n in range(num_harmonics):
-        an = (2 / np.pi) * np.trapz(target_function(x_values) * np.cos(n * x_values), x_values)
-        bn = (2 / np.pi) * np.trapz(target_function(x_values) * np.sin(n * x_values), x_values)
-        coefficients.append((an, bn))
-    return coefficients
 
-# Функция для аппроксимации функции с использованием коэффициентов Фурье
-def approximate_with_fourier(x_values: np.ndarray, coefficients: List[Tuple[float, float]]) -> np.ndarray:
-    approximated_function = np.zeros_like(x_values)
-    for n in range(len(coefficients)):
-        an, bn = coefficients[n]
-        approximated_function += an * np.cos(n * x_values) + bn * np.sin(n * x_values)
-    return approximated_function
+# Исходная функция
+def f(x: sy.Symbol) -> sy.Expr:
+    return sy.cos(2*x)
 
-# Функция для построения графиков
-def plot_functions(x_values: np.ndarray, original_function: np.ndarray, approximated_function: np.ndarray, num_harmonics: int) -> None:
-    plt.figure(figsize=(10, 6))
-    plt.plot(x_values, original_function, label='Исходная функция', linewidth=2)
-    plt.plot(x_values, approximated_function, label=f'Аппроксимация Фурье ({num_harmonics} гармоник)', linestyle='--', linewidth=2)
+
+def calculate_coefficients(f: sy.Expr) -> tuple[float, list[float], list[float]]:
+    x = sy.Symbol("x")
+    ai_list = []
+    bi_list = []
+    period = math.pi
+    a0 = (1 / period) * sy.integrate(f(x), (x, interval_start, interval_end))
+
+    for i in range(1, harmonics_number + 1):
+        ai = (1 / period) * sy.integrate(
+            f(x) * sy.cos(i * x),
+            (x, interval_start, interval_end),
+        )
+        ai_list.append(ai)
+
+        bi = (1 / period) * sy.integrate(
+            f(x) * sy.sin(i * x),
+            (x, interval_start, interval_end),
+        )
+        bi_list.append(bi)
+
+    return a0, ai_list, bi_list
+
+
+def calculate_approximation_function(
+    harmonics_number: int,
+) -> Callable([[sy.Symbol], sy.Expr]):
+    x = sy.Symbol("x")
+    a0, ai_list, bi_list = calculate_coefficients(f)
+    approximation_function = a0 / 2
+    for i in range(1, harmonics_number + 1):
+        approximation_function += ai_list[i - 1] * sy.cos(i * x) + bi_list[
+            i - 1
+        ] * sy.sin(i * x)
+    return approximation_function
+
+
+def plot_function(f: sy.Expr, start: float, end: float) -> None:
+    x_vals = np.linspace(start, end, 1000)
+    y_vals = [f(val) for val in x_vals]
+    plt.plot(x_vals, y_vals, label="Original Function")
+    plt.title("Original Function")
     plt.legend()
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.title(f'Аппроксимация функции с {num_harmonics} гармониками Фурье')
-    plt.grid(True)
     plt.show()
 
-# Основная функция
-# def main() -> None:
-#     x_values = np.linspace(0, 2 * np.pi, 1000)
-#     num_harmonics = 10
 
-#     fourier_coefficients = compute_fourier_coefficients(x_values, num_harmonics)
-#     approximated_function = approximate_with_fourier(x_values, fourier_coefficients)
+def plot_function_and_approximation(
+    f: Callable[[float], float],
+    approximation_function: Callable[[float], float],
+    interval_start: float,
+    interval_end: float,
+) -> None:
+    x_vals = np.linspace(interval_start, interval_end, 1000)
+    y_vals_original = [f(val) for val in x_vals]
+    y_vals_approximation = [approximation_function.subs(x, val) for val in x_vals]
+    plt.plot(x_vals, y_vals_original, label="Original Function")
+    plt.plot(x_vals, y_vals_approximation, label="Approximation Function")
+    plt.title("Original and Approximation Functions")
+    plt.legend()
+    plt.show()
 
-#     plot_functions(x_values, target_function(x_values), approximated_function, num_harmonics)
+
+def calculate_norm(
+    f: Callable[[float], sy.Expr],
+    approximation_function: Callable[[float], sy.Expr],
+    start: float,
+    end: float,
+) -> float:
+    integrand = lambda x: (f(x) - approximation_function.subs("x", x)) ** 2
+    result, _ = quad(integrand, start, end)
+    return np.sqrt(result)
+
+
+print(calculate_coefficients(f))
+approximation_function = calculate_approximation_function(harmonics_number)
+norm_value = calculate_norm(f, approximation_function, interval_start, interval_end)
+print(f"L2 Norm: {norm_value}")
+plot_function_and_approximation(f, approximation_function, interval_start, interval_end)
+
+# plot_function(f, -math.pi, math.pi)
