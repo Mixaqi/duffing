@@ -5,22 +5,11 @@ from autograd import jacobian
 
 
 def newton_system(
-    F: callable, x0: np.ndarray, tol: float = 1e-5, max_iter: int = 100,
+    F: callable,
+    x0: np.ndarray,
+    tol: float = 1e-5,
+    max_iter: int = 100,
 ) -> np.ndarray:
-    """Implementation of Newton's method for solving a system of nonlinear equations.
-
-    Parameters
-    ----------
-        F (callable): A function that takes a vector x as input and returns a vector F(x).
-        x0 (numpy.ndarray): An initial guess for the solution.
-        tol (float): The tolerance for the stopping criterion.
-        max_iter (int): The maximum number of iterations.
-
-    Returns
-    -------
-        numpy.ndarray: The approximate solution of the system of nonlinear equations.
-
-    """
     x = np.asarray(x0)
     for i in range(max_iter):
         Fx = F(x)
@@ -33,22 +22,11 @@ def newton_system(
 
 
 def newton_system_full_predictor(
-    F: callable, x0: np.ndarray, tol: float = 1e-5, max_iter: int = 100,
+    F: callable,
+    x0: np.ndarray,
+    tol: float = 1e-5,
+    max_iter: int = 100,
 ) -> np.ndarray:
-    """Implementation of Newton's method with full predictor step for solving a system of nonlinear equations.
-
-    Parameters
-    ----------
-        F (callable): A function that takes a vector x as input and returns a vector F(x).
-        x0 (numpy.ndarray): An initial guess for the solution.
-        tol (float): The tolerance for the stopping criterion.
-        max_iter (int): The maximum number of iterations.
-
-    Returns
-    -------
-        numpy.ndarray: The approximate solution of the system of nonlinear equations.
-
-    """
     x = np.asarray(x0)
     for i in range(max_iter):
         Fx = F(x)
@@ -70,21 +48,6 @@ def newton_system_partial_predictor_corrector(
     tol: float = 1e-5,
     max_iter: int = 100,
 ) -> np.ndarray:
-    """Implementation of Newton's method with partial predictor-corrector step for solving a system of nonlinear equations.
-
-    Parameters
-    ----------
-        F (callable): A function that takes a vector x as input and returns a vector F(x).
-        x0 (numpy.ndarray): An initial guess for the solution.
-        alpha (float): The fraction of the full predictor step to use in the partial predictor step.
-        tol (float): The tolerance for the stopping criterion.
-        max_iter (int): The maximum number of iterations.
-
-    Returns
-    -------
-        numpy.ndarray: The approximate solution of the system of nonlinear equations.
-
-    """
     x = np.asarray(x0)
     for i in range(max_iter):
         Fx = F(x)

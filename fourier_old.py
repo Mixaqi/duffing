@@ -8,37 +8,36 @@ import numpy as np
 import sympy as sy
 from scipy.integrate import quad
 
-
-t = sy.Symbol("t")
 x = sy.Symbol("x")
 harmonics_number = 5
 interval_start = -math.pi
 interval_end = math.pi
-
+omega=1 # пока берем отсюда омега
 
 
 # Исходная функция
-def f(t: sy.Symbol) -> sy.Expr:
-    return sy.cos(2 * t)
+def f(x: sy.Symbol) -> sy.Expr:
+    omega=1
+    return sy.cos(x * omega)
 
 
 def calculate_coefficients(f: sy.Expr) -> tuple[float, list[float], list[float]]:
-    t = sy.Symbol("t")
+    x = sy.Symbol("x")
     ai_list = []
     bi_list = []
     period = math.pi
-    a0 = (1 / period) * sy.integrate(f(t), (t, interval_start, interval_end))
+    a0 = (1 / period) * sy.integrate(f(x), (x, interval_start, interval_end))
 
     for i in range(1, harmonics_number + 1):
         ai = (1 / period) * sy.integrate(
-            f(t) * sy.cos(i * t),
-            (t, interval_start, interval_end),
+            f(x) * sy.cos(i * x),
+            (x, interval_start, interval_end),
         )
         ai_list.append(ai)
 
         bi = (1 / period) * sy.integrate(
-            f(t) * sy.sin(i * t),
-            (t, interval_start, interval_end),
+            f(x) * sy.sin(i * x),
+            (x, interval_start, interval_end),
         )
         bi_list.append(bi)
 
@@ -94,8 +93,10 @@ def calculate_norm(
     return np.sqrt(result)
 
 
-# print(calculate_coefficients(f))
-
-# print(calculate_coefficients(f))
+print(calculate_coefficients(f))
 approximation_function = calculate_approximation_function(harmonics_number)
-# print(approximation_function)
+norm_value = calculate_norm(f, approximation_function, interval_start, interval_end)
+print(f"L2 Norm: {norm_value}")
+plot_function_and_approximation(f, approximation_function, interval_start, interval_end)
+
+# plot_function(f, -math.pi, math.pi)
