@@ -1,22 +1,31 @@
 from __future__ import annotations
 
 import numpy as np
-from sympy import symbols
+from sympy import cos, symbols
 
 # Parameters
 delta = 0.1
 alpha = 1.0
 beta = 1.0
-gamma = 0.2
-omega = 1.4
+gamma = 0.5
+omega = 1
 n = 3
 h = 2 * np.pi / n
 
 
 def initialize_x(n):
-    x = [
-        symbols(f"x[{i}]") for i in range(n + 1)
-    ]  ###Здесь мы резервируем максимально возможное число этих переменных
+    """Инициализирует массив переменных x.
+
+    Parameters
+    ----------
+        n (int): Количество переменных.
+
+    Returns
+    -------
+        list: Массив символьных переменных x.
+
+    """
+    x = [symbols(f"x[{i}]") for i in range(n + 1)]
     return x
 
 
@@ -26,40 +35,44 @@ print("Массив x:", x)
 
 
 def create_equations(x, n):
+    """Создает систему уравнений для производных первого и второго порядка.
+
+    Parameters
+    ----------
+        x (list): Массив символьных переменных x.
+        n (int): Количество переменных.
+
+    Returns
+    -------
+        list: Сгруппированные уравнения.
+
+    """
     equations = []
 
     # Вычисление значения h
     h = 2 * np.pi / n
 
-    # Определение количества переменных
-    num_vars = len(x)
-
     # Добавление уравнений для производной первого порядка x'
-    for i in range(num_vars):
-        # Рассчитываем индексы для xi+1 и xi-1 с учетом особых случаев
-        idx_plus_1 = (i + 1) % num_vars
-        idx_minus_1 = (i - 1) % num_vars
-
-        # Создаем уравнение для x'
-        equation = ((x[idx_plus_1] - x[i]) / h) * delta  # ДОБАВИЛ ЗДЕСЬ ДЕЛЬТУ
+    for i in range(n + 1):
+        idx_plus_1 = (i + 1) % (n + 1)
+        equation = ((x[idx_plus_1] - x[i]) / h) * delta - gamma * cos(
+            omega * (i * h),
+        )
         equations.append(equation)
 
     # Добавление уравнений для производной второго порядка x''
-    for i in range(num_vars):
-        # Рассчитываем индексы для xi+1, xi и xi-1 с учетом особых случаев
-        idx_plus_1 = (i + 1) % num_vars
-        idx_minus_1 = (i - 1) % num_vars
-
-        # Создаем уравнение для x''
+    for i in range(n + 1):
+        idx_plus_1 = (i + 1) % (n + 1)
+        idx_minus_1 = (i - 1) % (n + 1)
         equation = (x[idx_plus_1] - 2 * x[i] + x[idx_minus_1]) / h**2
         equations.append(equation)
+
+    # Группировка уравнений
     num_equations = len(equations)
     half_point = num_equations // 2
-    grouped_equations = []
-
-    for i in range(half_point):
-        grouped_equation = equations[i] + equations[i + half_point]
-        grouped_equations.append(grouped_equation)
+    grouped_equations = [
+        equations[i] + equations[i + half_point] for i in range(half_point)
+    ]
 
     return grouped_equations
 
