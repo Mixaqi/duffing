@@ -55,7 +55,7 @@ def create_equations(x, n):
     # Добавление уравнений для производной первого порядка x'
     for i in range(n + 1):
         idx_plus_1 = (i + 1) % (n + 1)
-        equation = ((x[idx_plus_1] - x[i]) / h) * delta - gamma * cos(
+        equation = ((x[idx_plus_1] - x[i]) / h) * delta - gamma * cos(          #ЗДЕСЬ ИДЕТ РАСЧЕТ КОСИНУСА
             omega * (i * h),
         )
         equations.append(equation)
