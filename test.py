@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import numpy as np
 from sympy import symbols
-from sympy import pi
 
 # Parameters
 delta = 0.1
@@ -14,10 +13,12 @@ n = 3
 h = 2 * np.pi / n
 
 
-
 def initialize_x(n):
-    x = [symbols(f"x[{i}]") for i in range(n + 1)]  ###Здесь мы резервируем максимально возможное число этих переменных
+    x = [
+        symbols(f"x[{i}]") for i in range(n + 1)
+    ]  ###Здесь мы резервируем максимально возможное число этих переменных
     return x
+
 
 # Пример использования
 x = initialize_x(n)
@@ -40,7 +41,7 @@ def create_equations(x, n):
         idx_minus_1 = (i - 1) % num_vars
 
         # Создаем уравнение для x'
-        equation = ((x[idx_plus_1] - x[i]) / h) * delta # ДОБАВИЛ ЗДЕСЬ ДЕЛЬТУ
+        equation = ((x[idx_plus_1] - x[i]) / h) * delta  # ДОБАВИЛ ЗДЕСЬ ДЕЛЬТУ
         equations.append(equation)
 
     # Добавление уравнений для производной второго порядка x''
@@ -50,10 +51,18 @@ def create_equations(x, n):
         idx_minus_1 = (i - 1) % num_vars
 
         # Создаем уравнение для x''
-        equation = (x[idx_plus_1] - 2*x[i] + x[idx_minus_1]) / h**2
+        equation = (x[idx_plus_1] - 2 * x[i] + x[idx_minus_1]) / h**2
         equations.append(equation)
+    num_equations = len(equations)
+    half_point = num_equations // 2
+    grouped_equations = []
 
-    return equations
+    for i in range(half_point):
+        grouped_equation = equations[i] + equations[i + half_point]
+        grouped_equations.append(grouped_equation)
+
+    return grouped_equations
+
 
 x = initialize_x(n)
 equations = create_equations(x, n)
