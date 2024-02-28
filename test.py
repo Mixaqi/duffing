@@ -1,6 +1,7 @@
 from __future__ import annotations
-from scipy.optimize import newton
+
 import numpy as np
+from scipy.optimize import newton
 from sympy import cos, symbols
 
 from methods.newton import *
@@ -57,7 +58,6 @@ def create_equations(x, n):
     return grouped_equations
 
 
-
 x = initialize_x(n)
 equations = create_equations(x, n)
 numerical_values = [eq.evalf() for eq in equations]
@@ -71,8 +71,10 @@ for value in equations_array:
 for eq in equations:
     print(eq)
 
+
 def equations_function(x: np.ndarray) -> np.ndarray:
     return create_equations(x, n)
+
 
 x0 = np.zeros(len(equations_array))
 
