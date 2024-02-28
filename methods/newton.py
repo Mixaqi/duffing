@@ -72,10 +72,11 @@ def F(x: np.ndarray) -> np.ndarray:
     )
 
 
-# x0 = np.array([1.0, 1.0, 1.0])
-# start_time = time.time()
-# x, n_iterations = newton_system(F, x0)
-# end_time = time.time()
+x0 = np.array([1.0, 1.0, 1.0])
+x, n_iterations = newton_system(F, x0)
+
+# for item in F(x):
+#     print(type(item))
 
 # print(f"Solution: {x}")
 # print(f"Iterations: {n_iterations}")
