@@ -45,7 +45,7 @@ def create_equations(x, n):
     for i in range(n + 1):
         idx_plus_1 = (i + 1) % (n + 1)
         equation_x = ((x[idx_plus_1] - x[i]) / h) * delta
-        equation_x_cubed = beta * x[i] ** 3 #ЗДЕСЬ ЕЩЕ ДОБАВИЛИ БЕТУ
+        equation_x_cubed = beta * x[i] ** 3 #ЗДЕСЬ ЕЩЕ ДОБАВИЛИ БЕТА
         equation = (
             equation_x + equation_x_cubed + alpha * x[i] - gamma * cos(omega * (i * h))
         )
