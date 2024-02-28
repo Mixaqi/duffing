@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 from sympy import cos, symbols
+from methods.newton import *
 
 # Parameters
 delta = 0.1
@@ -35,18 +36,6 @@ print("Массив x:", x)
 
 
 def create_equations(x, n):
-    """Создает систему уравнений для производных первого и второго порядка.
-
-    Parameters
-    ----------
-        x (list): Массив символьных переменных x.
-        n (int): Количество переменных.
-
-    Returns
-    -------
-        list: Сгруппированные уравнения.
-
-    """
     equations = []
 
     # Вычисление значения h
@@ -55,8 +44,10 @@ def create_equations(x, n):
     # Добавление уравнений для производной первого порядка x'
     for i in range(n + 1):
         idx_plus_1 = (i + 1) % (n + 1)
-        equation = ((x[idx_plus_1] - x[i]) / h) * delta - gamma * cos(          #ЗДЕСЬ ИДЕТ РАСЧЕТ КОСИНУСА
-            omega * (i * h),
+        equation_x = ((x[idx_plus_1] - x[i]) / h) * delta
+        equation_x_cubed = beta * x[i] ** 3
+        equation = (
+            equation_x + equation_x_cubed + alpha * x[i] - gamma * cos(omega * (i * h))
         )
         equations.append(equation)
 
@@ -81,3 +72,6 @@ x = initialize_x(n)
 equations = create_equations(x, n)
 for eq in equations:
     print(eq)
+
+
+

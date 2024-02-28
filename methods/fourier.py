@@ -8,13 +8,11 @@ import numpy as np
 import sympy as sy
 from scipy.integrate import quad
 
-
 t = sy.Symbol("t")
 x = sy.Symbol("x")
 harmonics_number = 5
 interval_start = -math.pi
 interval_end = math.pi
-
 
 
 # Исходная функция
