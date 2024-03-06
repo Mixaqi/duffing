@@ -11,13 +11,13 @@ from scipy.integrate import quad
 t = sy.Symbol("t")
 x = sy.Symbol("x")
 harmonics_number = 5
-interval_start = -math.pi
-interval_end = math.pi
-
+interval_start = 0
+interval_end = 2 * math.pi
+t_values = np.array([0, np.pi/4, np.pi])
 
 # Исходная функция
-def f(t: sy.Symbol) -> sy.Expr:
-    return sy.cos(2 * t)
+def f(t: np.ndarray) -> np.ndarray:
+    return t
 
 
 def calculate_coefficients(f: sy.Expr) -> tuple[float, list[float], list[float]]:
@@ -74,7 +74,7 @@ def plot_function_and_approximation(
     x_vals = np.linspace(interval_start, interval_end, 1000)
     y_vals_original = [f(val) for val in x_vals]
     y_vals_approximation = [approximation_function.subs(x, val) for val in x_vals]
-    plt.plot(x_vals, y_vals_original, label="Original Function")
+    # plt.plot(x_vals, y_vals_original, label="Original Function")
     plt.plot(x_vals, y_vals_approximation, label="Approximation Function")
     plt.title("Original and Approximation Functions")
     plt.legend()
@@ -96,4 +96,4 @@ def calculate_norm(
 
 # print(calculate_coefficients(f))
 approximation_function = calculate_approximation_function(harmonics_number)
-# print(approximation_function)
+print(approximation_function)

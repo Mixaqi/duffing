@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from methods.duffing import alpha, beta, delta, duffing_equation, gamma, omega
-from methods.fourier import calculate_coefficients, f, calculate_approximation_function, harmonics_number
+from methods.fourier import calculate_approximation_function, harmonics_number
 
 
 def main() -> None:

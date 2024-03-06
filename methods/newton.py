@@ -65,22 +65,22 @@ def newton_system_partial_predictor_corrector(
 def F(x: np.ndarray) -> np.ndarray:
     return np.array(
         [
-            x[0] ** 2 + x[1] ** 2 + x[2] ** 2 - 10,
-            x[0] * x[1] - 5 * x[1] + x[2] ** 3 + 1,
-            x[0] * x[2] + x[1] * x[2] - 2 * x[2] - 1,
+            x[0] ** 3 + 0.5*x[0] + 0.28*x[1] + 0.23*x[3] - 0.5, 
+            0.23*x[0] + x[1]**3 + 0.5*x[1] + 0.28*x[2] + 0.25,
+            0.23*x[1] + x[2] ** 3 + 0.5*x[2] + 0.28*x[3] + 0.25,
+            0.28*x[0] + 0.23*x[2] + x[3]**3 + 0.5*x[3] - 0.5,
         ],
     )
 
 
-x0 = np.array([1.0, 1.0, 1.0])
+x0 = np.array([1.0, 1.0, 1.0, 1.0])
 x, n_iterations = newton_system(F, x0)
 
 # for item in F(x):
 #     print(type(item))
 
-# print(f"Solution: {x}")
-# print(f"Iterations: {n_iterations}")
-# print(f"Execution time: {end_time - start_time} seconds")
+print(f"Solution: {x}")
+print(f"Iterations: {n_iterations}")
 
 
 # x0 = np.array([1.0, 1.0, 1.0])

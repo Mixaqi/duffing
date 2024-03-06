@@ -4,7 +4,9 @@ import numpy as np
 from scipy.optimize import newton
 from sympy import cos, symbols
 
+
 from methods.newton import *
+from methods.fourier import *
 
 delta = 0.1
 alpha = 1.0
@@ -64,8 +66,8 @@ numerical_values = [eq.evalf() for eq in equations]
 
 # Преобразование списка в массив ndarray
 equations_array = np.array(numerical_values)
-for value in equations_array:
-    print(type(value))
+# for value in equations_array:
+#     print(type(value))
 
 
 for eq in equations:
@@ -81,3 +83,12 @@ x0 = np.zeros(len(equations_array))
 solution = newton(equations_function, x0)
 
 print(solution)
+
+f(t=solution)
+calculate_coefficients(f)
+approximation_function = calculate_approximation_function(harmonics_number)
+print(approximation_function)
+
+norm_value = calculate_norm(f, approximation_function, interval_start, interval_end)
+print(f"L2 Norm: {norm_value}")
+plot_function_and_approximation(f, approximation_function, interval_start, interval_end)
