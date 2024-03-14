@@ -3,18 +3,18 @@ from __future__ import annotations
 import numpy as np
 from scipy.optimize import newton
 from sympy import cos, symbols
+import math
 
 
-from methods.newton import *
-from methods.fourier import *
 
-delta = 0.1
-alpha = 1.0
-beta = 1.0
-gamma = 0.5
-omega = 1
-n = 3
-h = 2 * np.pi / n
+# delta = 0.1
+# alpha = 1.0
+# beta = 1.0
+# gamma = 0.5
+# omega = 1
+# n = 3
+# h = 2 * math.pi / n
+
 
 
 def initialize_x(n):
@@ -27,11 +27,11 @@ def initialize_x(n):
 # print("Массив x:", x)
 
 
-def create_equations(x, n):
+def create_equations(x, n, delta, alpha, gamma, omega, beta):
     equations = []
 
     # Вычисление значения h
-    h = 2 * np.pi / n
+    h = 2 * math.pi / n
 
     # Добавление уравнений для производной первого порядка x'
     for i in range(n + 1):
@@ -60,35 +60,35 @@ def create_equations(x, n):
     return grouped_equations
 
 
-x = initialize_x(n)
-equations = create_equations(x, n)
-numerical_values = [eq.evalf() for eq in equations]
+# x = initialize_x(n)
+# equations = create_equations(x, n)
+# numerical_values = [eq.evalf() for eq in equations]
 
 # Преобразование списка в массив ndarray
-equations_array = np.array(numerical_values)
+# equations_array = np.array(numerical_values)
 # for value in equations_array:
 #     print(type(value))
 
 
-for eq in equations:
-    print(eq)
+# for eq in equations:
+#     print(eq)
 
 
 def equations_function(x: np.ndarray) -> np.ndarray:
-    return create_equations(x, n)
+    return create_equations(x, n, delta, alpha, gamma, omega, beta)
 
 
-x0 = np.zeros(len(equations_array))
+# x0 = np.zeros(len(equations_array))
 
-solution = newton(equations_function, x0)
+# solution = newton(equations_function, x0)
 
-print(solution)
+# print(solution)
 
-f(t=solution)
-calculate_coefficients(f)
-approximation_function = calculate_approximation_function(harmonics_number)
-print(approximation_function)
+# f(t=solution)
+# calculate_coefficients(f)
+# approximation_function = calculate_approximation_function(harmonics_number)
+# print(approximation_function)
 
-norm_value = calculate_norm(f, approximation_function, interval_start, interval_end)
-print(f"L2 Norm: {norm_value}")
-plot_function_and_approximation(f, approximation_function, interval_start, interval_end)
+# norm_value = calculate_norm(f, approximation_function, interval_start, interval_end)
+# print(f"L2 Norm: {norm_value}")
+# plot_function_and_approximation(f, approximation_function, interval_start, interval_end)

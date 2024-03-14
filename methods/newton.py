@@ -65,37 +65,34 @@ def newton_system_partial_predictor_corrector(
 def F(x: np.ndarray) -> np.ndarray:
     return np.array(
         [
-            x[0] ** 3 + 0.5*x[0] + 0.28*x[1] + 0.23*x[3] - 0.5, 
-            0.23*x[0] + x[1]**3 + 0.5*x[1] + 0.28*x[2] + 0.25,
-            0.23*x[1] + x[2] ** 3 + 0.5*x[2] + 0.28*x[3] + 0.25,
-            0.28*x[0] + 0.23*x[2] + x[3]**3 + 0.5*x[3] - 0.5,
+            x[0] ** 3 + 0.5 * x[0] + 0.28 * x[1] + 0.23 * x[3] - 0.5,
+            0.23 * x[0] + x[1] * 3 + 0.5 * x[1] + 0.28 * x[2] + 0.25,
+            0.23 * x[1] + x[2] ** 3 + 0.5 * x[2] + 0.28 * x[3] + 0.25,
+            0.28 * x[0] + 0.23 * x[2] + x[3] ** 3 + 0.5 * x[3] - 0.5,
         ],
     )
 
 
-x0 = np.array([1.0, 1.0, 1.0, 1.0])
-x, n_iterations = newton_system(F, x0)
+# x0 = np.array([1.0, 1.0, 1.0, 1.0])
 
-# for item in F(x):
+# result = F(x0)
+
+# # Определяем тип результата
+# result_type = type(result)
+# print(result_type)
+
+
+# # Выводим тип каждого элемента возвращаемого массива
+# for item in result:
 #     print(type(item))
 
-print(f"Solution: {x}")
-print(f"Iterations: {n_iterations}")
+# print(f"Solution: {x}")
+# print(f"Iterations: {n_iterations}")
 
 
 # x0 = np.array([1.0, 1.0, 1.0])
 # start_time = time.time()
 # x, n_iterations = newton_system_full_predictor(F, x0)
-# end_time = time.time()
-
-# print(f"Solution: {x}")
-# print(f"Iterations: {n_iterations}")
-# print(f"Execution time: {end_time - start_time} seconds")
-
-
-# x0 = np.array([1.0, 1.0, 1.0])
-# start_time = time.time()
-# x, n_iterations = newton_system_partial_predictor_corrector(F, x0)
 # end_time = time.time()
 
 # print(f"Solution: {x}")
