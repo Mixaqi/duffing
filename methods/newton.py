@@ -66,35 +66,28 @@ def F(x: np.ndarray) -> np.ndarray:
     return np.array(
         [
             x[0] ** 3 + 0.5 * x[0] + 0.28 * x[1] + 0.23 * x[3] - 0.5,
-            0.23 * x[0] + x[1] * 3 + 0.5 * x[1] + 0.28 * x[2] + 0.25,
+            0.23 * x[0] + x[1] ** 3 + 0.5 * x[1] + 0.28 * x[2] + 0.25,
             0.23 * x[1] + x[2] ** 3 + 0.5 * x[2] + 0.28 * x[3] + 0.25,
             0.28 * x[0] + 0.23 * x[2] + x[3] ** 3 + 0.5 * x[3] - 0.5,
+            # x[0] + 2*x[1] - 2,
+            # x[0]**2 + 4*x[1]**2 - 4,
         ],
     )
 
 
-# x0 = np.array([1.0, 1.0, 1.0, 1.0])
+def gradient_descent(F, x0, alpha=0.01, tol=1e-6, max_iter=1000):
+    x = np.array(x0, dtype=float)
+    for i in range(max_iter):
+        grad = F(x)
+        x_new = x - alpha * grad
+        if np.linalg.norm(x_new - x) < tol:
+            return x_new, i+1
+        x = x_new
+    raise Exception("Gradient descent did not converge")
 
-# result = F(x0)
+x0 = [0.5, 0.5, 0.5,0.5]
 
-# # Определяем тип результата
-# result_type = type(result)
-# print(result_type)
-
-
-# # Выводим тип каждого элемента возвращаемого массива
-# for item in result:
-#     print(type(item))
-
-# print(f"Solution: {x}")
-# print(f"Iterations: {n_iterations}")
-
-
-# x0 = np.array([1.0, 1.0, 1.0])
-# start_time = time.time()
-# x, n_iterations = newton_system_full_predictor(F, x0)
-# end_time = time.time()
-
-# print(f"Solution: {x}")
-# print(f"Iterations: {n_iterations}")
-# print(f"Execution time: {end_time - start_time} seconds")
+# Применение метода спуска
+solution, iterations = gradient_descent(F, x0)
+print("Решение системы:", solution)
+print("Число итераций:", iterations)
